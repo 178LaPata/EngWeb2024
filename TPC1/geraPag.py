@@ -1,7 +1,7 @@
 import os
 import xml.etree.ElementTree as ET
 
-diretorio_imgs_atual = "/Users/lapata/Desktop/web/EngWeb2024/TPC1/MapaRuas-materialBase/atual"
+diretorio_imgs_atual = "/Users/lapata/Desktop/web/EngWeb2024/TPC1/atual"
 
 def formatar_texto_html(texto):
     if not texto:
