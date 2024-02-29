@@ -4,6 +4,7 @@ var url = require('url');
 
 http.createServer(function (req, res) {
     var regex = /^\/(c\d+)$/
+    console.log(req.method + ' ' + req.url)
     var q = url.parse(req.url, true)
     if(regex.test(q.pathname)){
         var path = 'cidades/' + q.pathname.slice(1) + '.html'
