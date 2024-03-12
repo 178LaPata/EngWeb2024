@@ -21,23 +21,20 @@ def write_json(data, file):
 
 def get_periodos(data):
     periodos = []
+    id_counter = 1
     for i in data['compositores']:
         if 'periodo' in i:
             periodo = i['periodo']
             existing_periodo = next((p for p in periodos if p['periodo'] == periodo), None)
             if existing_periodo:
-                existing_periodo['compositores'].append({
-                    "id": i['id'],
-                    "nome": i['nome']
-                })
+                existing_periodo['compositores'].append(i['id'])
             else:
                 periodos.append({
+                    "id": "p" + str(id_counter),
                     "periodo": periodo,
-                    "compositores": [{
-                        "id": i['id'],
-                        "nome": i['nome'],
-                    }]
+                    "compositores": [i['id']]
                 })
+                id_counter += 1
     return periodos
 
 file = 'compositores.json'
