@@ -30,6 +30,7 @@ var compositoresServer = http.createServer((req, res) => {
     else{
         switch(req.method){
             case "GET": 
+                // GET /compositores --------------------------------------------------------------------
                 if(req.url == '/compositores'){
                     axios.get('http://localhost:3000/compositores')
                         .then(resposta => {
@@ -41,21 +42,30 @@ var compositoresServer = http.createServer((req, res) => {
                             res.end(templates.errorPageCompositores(erro, d))
                         })
                 }
+                // GET /compositores/:id --------------------------------------------------------------------
                 else if(/\/compositores\/C[0-9]+/.test(req.url)){
                     axios.get('http://localhost:3000' + req.url)
                         .then(resposta => {
-                            res.writeHead(200, {'Content-Type': 'text/html'})
-                            res.end(templates.compositorPage(resposta.data, d))
+                            var compositor = resposta.data;
+                            axios.get('http://localhost:3000/periodos')
+                                .then(resposta => {
+                                    var periodos = resposta.data;
+                                    var periodo = periodos.find(periodo => periodo.periodo === compositor.periodo);
+                                    res.writeHead(200, {'Content-Type': 'text/html'})
+                                    res.end(templates.compositorPage(compositor, d, periodo))
+                                });
                         })
                         .catch(erro => {
                             //res.writeHead(520, {'Content-Type': 'text/html'})
                             res.end(templates.errorPageCompositores(erro, d))
                         })
                 }
+                // GET /compositores/registo --------------------------------------------------------------------
                 else if (req.url == '/compositores/registo'){
                     res.writeHead(200, {'Content-Type': 'text/html'})
                     res.end(templates.compositorFormPage(d))
                 }
+                // GET /compositores/edit/:id --------------------------------------------------------------------
                 else if(/\/compositores\/edit\/C[0-9]+/.test(req.url)){
                     var partes = req.url.split('/')
                     var id = partes[partes.length - 1]
@@ -69,6 +79,7 @@ var compositoresServer = http.createServer((req, res) => {
                             res.end(templates.errorPageCompositores(erro, d))
                         })
                 }
+                // GET /compositores/delete/:id --------------------------------------------------------------------
                 else if (/\/compositores\/delete\/C[0-9]+/.test(req.url)){
                     var partes = req.url.split("/")
                     var id = partes[partes.length - 1]
@@ -83,6 +94,7 @@ var compositoresServer = http.createServer((req, res) => {
                             res.end(templates.errorPageCompositores(erro, d))
                         })
                 }
+                // GET /periodos --------------------------------------------------------------------
                 else if(req.url == '/periodos'){
                     axios.get('http://localhost:3000/periodos')
                         .then(resposta => {
@@ -94,37 +106,52 @@ var compositoresServer = http.createServer((req, res) => {
                             res.end(templates.errorPagePeriodo(erro, d))
                         })
                 }
+                // GET /periodos/:id --------------------------------------------------------------------
                 else if(/\/periodos\/p\d+/.test(req.url)){
                     var partes = req.url.split('/')
                     var id = partes[partes.length - 1]
                     axios.get('http://localhost:3000/periodos/' + id)
                         .then(resposta => {
-                            res.writeHead(200, {'Content-Type': 'text/html'})
-                            console.log(resposta.data)
-                            res.end(templates.periodoPage(resposta.data, d))
+                            var periodo = resposta.data;
+                            return axios.get('http://localhost:3000/compositores/')
+                                .then(resposta => {
+                                    var compositores = resposta.data;
+                                    var compositoresDoPeriodo = compositores.filter(compositor => compositor.periodo === periodo.periodo);
+                                    res.writeHead(200, {'Content-Type': 'text/html'})
+                                    res.end(templates.periodoPage(periodo, d, compositoresDoPeriodo))
+                                });
                         })
                         .catch(erro => {
                             //res.writeHead(520, {'Content-Type': 'text/html'})
                             res.end(templates.errorPagePeriodo(erro, d))
                         })
                 }
+                // GET /periodos/registo --------------------------------------------------------------------
                 else if (req.url == '/periodos/registo'){
                     res.writeHead(200, {'Content-Type': 'text/html'})
                     res.end(templates.periodoFormPage(d))
                 }
+                // GET /periodos/edit/:id --------------------------------------------------------------------
                 else if(/\/periodos\/edit\/p\d+/.test(req.url)){
                     var partes = req.url.split('/')
                     var id = partes[partes.length - 1]
                     axios.get('http://localhost:3000/periodos/' + id)
                         .then(resposta => {
-                            res.writeHead(200, {'Content-Type': 'text/html'})
-                            res.end(templates.periodoFormEditPage(resposta.data, d))
+                            var periodo = resposta.data;
+                            axios.get('http://localhost:3000/compositores/')
+                                .then(resposta => {
+                                    var compositores = resposta.data;
+                                    var compositoresDoPeriodo = compositores.filter(compositor => compositor.periodo === periodo.periodo);
+                                    res.writeHead(200, {'Content-Type': 'text/html'})
+                                    res.end(templates.periodoFormEditPage(periodo, d, compositoresDoPeriodo))
+                                });
                         })
                         .catch(erro =>{
                             //res.writeHead(520, {'Content-Type': 'text/html'})
                             res.end(templates.errorPagePeriodo(erro, d))
                         })
                 }
+                // GET /periodos/delete/:id --------------------------------------------------------------------
                 else if (/\/periodos\/delete\/p\d+/.test(req.url)){
                     var partes = req.url.split("/")
                     var id = partes[partes.length - 1]
@@ -139,12 +166,14 @@ var compositoresServer = http.createServer((req, res) => {
                             res.end(templates.errorPagePeriodo(erro, d))
                         })
                 }
+                // GET ? -> Lancar um erro
                 else {
                     res.writeHead(404, {'Content-Type': 'text/html'})
                     res.end(templates.errorPageCompositores(`Pedido GET não suportado: ${req.url}`, d))
                 }
                 break
             case "POST":
+                // POST /compositores/registo --------------------------------------------------------------------
                 if (req.url == '/compositores/registo'){
                     collectRequestBodyData(req, result => {
                         if(result){
@@ -164,6 +193,7 @@ var compositoresServer = http.createServer((req, res) => {
                     }
                     })
                 }
+                // POST /compositores/edit/:id --------------------------------------------------------------------
                 else if (/\/compositores\/edit\/C[0-9]+/.test(req.url)){
                     var partes = req.url.split("/")
                     var idAluno = partes[partes.length - 1]
@@ -185,6 +215,7 @@ var compositoresServer = http.createServer((req, res) => {
                     }
                     })
                 }
+                // POST /periodos/registo --------------------------------------------------------------------
                 else if (req.url == '/periodos/registo'){
                     collectRequestBodyData(req, result => {
                         if(result){
@@ -204,6 +235,7 @@ var compositoresServer = http.createServer((req, res) => {
                     }
                     })
                 }
+                // POST /periodos/edit/:id --------------------------------------------------------------------
                 else if (/\/periodos\/edit\/[a-zA-Z]+/.test(req.url)){
                     var partes = req.url.split("/")
                     var idAluno = partes[partes.length - 1]
@@ -211,20 +243,27 @@ var compositoresServer = http.createServer((req, res) => {
                         if(result){
                             axios.put('http://localhost:3000/periodos/' + idAluno, result)
                                 .then(resposta => {
-                                    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
-                                    res.end(templates.periodoPage(resposta.data, d))
+                                    var periodo = resposta.data;
+                                    axios.get('http://localhost:3000/compositores/')
+                                        .then(resposta => {
+                                            var compositores = resposta.data;
+                                            var compositoresDoPeriodo = compositores.filter(compositor => compositor.periodo === periodo.periodo);
+                                            res.writeHead(200, {'Content-Type': 'text/html'})
+                                            res.end(templates.periodoPage(periodo, d, compositoresDoPeriodo))
+                                        });
                                 })
                                 .catch(erro => {
                                     //res.writeHead(521, {'Content-Type': 'text/html'})
                                     res.end(templates.errorPagePeriodo(erro, d))
                                 }) 
-                    } else {
-                        res.writeHead(404, {'Content-Type': 'text/html'})
-                        res.write("<p>Unable to collect data from body...</p>")
-                        res.end()
-                    }
+                        } else {
+                            res.writeHead(404, {'Content-Type': 'text/html'})
+                            res.write("<p>Unable to collect data from body...</p>")
+                            res.end()
+                        }
                     })
                 }
+                // POST ? -> Lancar um erro
                 else {
                     res.writeHead(404, {'Content-Type': 'text/html'})
                     res.end(templates.errorPageCompositores(`Pedido POST não suportado: ${req.url}`, d))
@@ -236,6 +275,5 @@ var compositoresServer = http.createServer((req, res) => {
 })
 
 compositoresServer.listen(7777, ()=>{
-    console.log("Servidor à escuta na porta 7777...")
+    console.log("Server is running on port 7777")
 })
-

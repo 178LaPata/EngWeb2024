@@ -2,13 +2,14 @@
   "name": "tpc4",
   "version": "1.0.0",
   "description": "tpc4",
-  "main": "compositores-server.js",
+  "main": "server.js",
   "scripts": {
-    "test": "node compositores-server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "Lara Ferreira",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.6.7"
+    "axios": "^1.6.8"
   }
 }

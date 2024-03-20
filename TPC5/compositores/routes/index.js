@@ -105,13 +105,33 @@ router.get('/compositores/editar/:id', function(req, res) {
 
 router.post('/compositores/editar/:id', function(req, res) {
   var d = new Date().toISOString().substring(0, 16)
-  axios.put('http://localhost:3000/compositores/' + req.params.id, req.body)
-  .then(resposta => {
-    res.render('compositor', { compositor: req.body, title: 'Compositor editado com sucesso', data: d});
-  })
-  .catch(erro => {
-    res.render('error', { error: erro, message : 'Erro ao editar o compositor' });
-  })
+  // Primeiro, obtenha o compositor original
+  axios.get('http://localhost:3000/compositores/' + req.params.id)
+    .then(resposta => {
+      var originalPeriodo = resposta.data.periodo;
+      // Em seguida, atualize o compositor
+      axios.put('http://localhost:3000/compositores/' + req.params.id, req.body)
+        .then(resposta => {
+          // Se o período foi editado, atualize o período também
+          if (originalPeriodo !== req.body.periodo) {
+            axios.put('http://localhost:3000/periodos/' + originalPeriodo, {periodo: req.body.periodo})
+              .then(resposta => {
+                res.render('compositor', { compositor: req.body, title: 'Compositor e período editados com sucesso', data: d});
+              })
+              .catch(erro => {
+                res.render('error', { error: erro, message : 'Erro ao editar o período' });
+              });
+          } else {
+            res.render('compositor', { compositor: req.body, title: 'Compositor editado com sucesso', data: d});
+          }
+        })
+        .catch(erro => {
+          res.render('error', { error: erro, message : 'Erro ao editar o compositor' });
+        });
+    })
+    .catch(erro => {
+      res.render('error', { error: erro, message : 'Erro ao obter o compositor original' });
+    });
 });
 
 // PERIODOS

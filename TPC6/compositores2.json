@@ -3,7 +3,7 @@
     {
       "id": "C26",
       "nome": "Alessandro Marcello",
-      "bio": "Alessandro Ignazio Marcello (Veneza, 1 de Fevereiro de 1673 –Veneza, 19 de Junho de 1747) foi um nobre e diletante, que se interessava pela         arte, tendo sido poeta, filósofo e notável músico italiano.",
+      "bio": "Alessandro Ignazio Marcello (Veneza, 1 de Fevereiro de 1673 –Veneza, 19 de Junho de 1747) foi um nobre e diletante, que se interessava pela\n         arte, tendo sido poeta, filósofo e notável músico italiano.",
       "dataNasc": "1673-02-01",
       "dataObito": "1747-06-19",
       "periodo": "Barroco"
@@ -1347,103 +1347,24 @@
     {
       "modalidade": "Natação",
       "id": "EYnyuiy"
+    },
+    {
+      "id": "C954",
+      "nome": "DLC",
+      "bio": "jk",
+      "dataNasc": "1999",
+      "dataObito": "2002",
+      "periodo": "WGwg"
     }
   ],
   "periodos": [
     {
       "id": "p1",
-      "periodo": "Barroco",
+      "nome": "Barroco",
       "compositores": [
-        "",
-        "Alessandro Marcello",
-        "Alessandro Scarlatti",
-        "Altnickol, Johann Christoph",
-        "Antoine Forqueray",
-        "Antonio Lotti",
-        "Antonio Lucio Vivaldi",
-        "Antonio Soler",
-        "Ariosti, Attilio",
-        "Bach, Johann Sebastian",
-        "Bach, Wilhelm Friedemann",
-        "Balbastre, Claude",
-        "Baldassare Galuppi",
-        "Barbara of Portugal",
-        "Benda, Franz",
-        "Biber, Carl Heinrich",
-        "Bononcini, Giovanni Battista",
-        "Bonporti, Francesco Antonio",
-        "Caldara, Antonio",
-        "Corelli, Arcangelo",
-        "Couperin, Armand-Louis",
-        "David Perez",
-        "Domenico Alberti",
-        "Domenico Scarlatti",
-        "Durante, Francesco",
-        "Emanuele d'Astorga",
-        "Francesco Feo",
-        "Francesco Geminiani",
-        "Francesco Maria Veracini",
-        "Friederike Sophie Wilhelmine",
-        "Fux, Johann Joseph",
-        "Georg Bohm",
-        "Georg Muffat",
-        "Georg Philipp Telemann",
-        "Gibbs, Joseph",
-        "Giovanni Battista Bassani",
-        "Giuseppe Tartini",
-        "Grigny, Nicolas de",
-        "Handel, George Frideric",
-        "Hasse, Johann Adolph",
-        "Haym, Nicola Francesco",
-        "Henri Desmarets",
-        "Jan Dismas Zelenka",
-        "Jean-Joseph Mouret",
-        "Jean-Marie Leclair",
-        "Jeremiah Clarke",
-        "Johann Christoph(er) Pepusch",
-        "Johann David Heinichen",
-        "Johann Ernst Eberlin",
-        "Johann Gottlieb Goldberg",
-        "Johann Joachim Quantz",
-        "Johann Krieger",
-        "Johann Nicolaus Bach",
-        "Johann Pachelbel",
-        "Johann Tobias Krebs",
-        "John Eccles",
-        "Krebs, Johann Ludwig",
-        "Kuhnau, Johann",
-        "Leo, Leonardo",
-        "Louis Marchand",
-        "Louis-Claude Daquin",
-        "Marais, Marin",
-        "Marcello, Benedetto",
-        "Martini, Giovanni Battista",
-        "Mattheson, Johann",
-        "Maurice Greene",
-        "Michel Richard Delalande",
-        "Mondonville, Jean-Joseph",
-        "Neander, Joachim",
-        "Nicola Porpora",
-        "Nicolas Siret",
-        "Nicolaus Bruhns",
-        "Pergolesi, Giovanni Battista",
-        "Purcell, Henry",
-        "Rameau, Jean-Philippe",
-        "Robert de Visee",
-        "Rousseau, Jean-Jacques",
-        "Sammartini, Giovanni Battista",
-        "Sammartini, Giuseppe",
-        "Schenck, Johannes",
-        "Seixas, Carlos",
-        "Steffani, Agostino",
-        "Thomas Arne",
-        "Tomaso Albinoni",
-        "Veracini, Antonio",
-        "Weldon, John",
-        "Wilhelmine of Prussia",
-        "William Boyce",
-        "Zachow, Friedrich Wilhelm",
-        "Zipoli, Domenico"
+        "aklsfn",
+        "aklsfn",
+        ""
       ]
     },
     {
@@ -1532,30 +1453,8 @@
       ]
     },
     {
-      "id": "a1b8",
-      "nome": "jksaaf"
-    },
-    {
-      "id": "332c",
-      "nome": "jksasdf"
-    },
-    {
-      "id": "4644",
-      "nome": "jksaaf"
-    },
-    {
-      "id": "p645",
-      "periodo": "jksaknl",
-      "compositor": "DLC"
-    },
-    {
-      "id": "p646",
-      "periodo": "jksaknl",
-      "compositor": "DLC"
-    },
-    {
-      "id": "p647",
-      "periodo": "jksaaf"
+      "id": "b66d",
+      "nome": "WGwg"
     }
   ]
 }
