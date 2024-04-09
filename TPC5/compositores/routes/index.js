@@ -14,7 +14,17 @@ router.get('/compositores', function(req, res) {
   var d = new Date().toISOString().substring(0, 16);
   axios.get('http://localhost:3000/compositores')
   .then(resposta => {
-    res.render('listaCompositores', { lista: resposta.data, data: d, title: 'Lista de Compositores' });
+    axios.get('http://localhost:3000/periodos')
+    .then(resposta2 => {
+      var listaComPeriodoId = resposta.data.map(comp => {
+        var periodo = resposta2.data.find(p => p.nome === comp.periodo);
+        if (periodo) {
+          comp.periodoId = periodo.id;
+        }
+        return comp;
+      });
+      res.render('listaCompositores', { lista: listaComPeriodoId, periodos: resposta2.data, data: d, title: 'Lista de Compositores' });
+    })
   })
   .catch(erro => {
     res.render('error', {error: erro})
@@ -27,10 +37,21 @@ router.get('/compositores/registo', function(req, res) {
 });
 
 router.get('/compositores/:id', function(req, res) {
-  var d = new Date().toISOString().substring(0, 16)
+  var d = new Date().toISOString().substring(0, 16);
   axios.get('http://localhost:3000/compositores/' + req.params.id)
   .then(resposta => {
-    res.render('compositor', { compositor: resposta.data, data: d, title: resposta.data.nome});
+    var compositor = resposta.data;
+    axios.get('http://localhost:3000/periodos')
+    .then(resposta2 => {
+      var periodo = resposta2.data.find(p => p.nome === compositor.periodo);
+      if (periodo) {
+        compositor.periodoId = periodo.id;
+      }
+      res.render('compositor', { compositor: compositor, data: d, title: compositor.nome});
+    })
+    .catch(erro => {
+      res.render('error', { error: erro, message : 'Erro a aceder o periodo' });
+    })
   })
   .catch(erro => {
     res.render('error', { error: erro, message : 'Erro a aceder o compositor' });
@@ -51,15 +72,11 @@ router.get('/compositores/delete/:id', function(req, res) {
 router.post('/compositores/registo', function(req, res) {
   var d = new Date().toISOString().substring(0, 16);
   var novoCompositor = req.body;
-
-  // Verificar se o período do compositor já existe
   axios.get('http://localhost:3000/periodos')
     .then(resposta => {
       var periodosExistentes = resposta.data;
       var periodoExistente = periodosExistentes.find(periodo => periodo.nome === novoCompositor.periodo);
-
       if (!periodoExistente) {
-        // Se o período não existe, criar e adicionar
         axios.post('http://localhost:3000/periodos', { nome: novoCompositor.periodo })
           .then(resposta => {
             console.log("Novo período adicionado:", resposta.data);
@@ -76,7 +93,6 @@ router.post('/compositores/registo', function(req, res) {
             res.render('error', { error: erro, message: 'Erro a adicionar um novo período' });
           });
       } else {
-        // Se o período existe, podemos prosseguir com o registro do compositor
         axios.post('http://localhost:3000/compositores', novoCompositor)
           .then(resposta => {
             res.render('confirmarRegisto', { compositor: novoCompositor, title: 'Registo de um compositor com sucesso', data: d });
@@ -105,14 +121,11 @@ router.get('/compositores/editar/:id', function(req, res) {
 
 router.post('/compositores/editar/:id', function(req, res) {
   var d = new Date().toISOString().substring(0, 16)
-  // Primeiro, obtenha o compositor original
   axios.get('http://localhost:3000/compositores/' + req.params.id)
     .then(resposta => {
       var originalPeriodo = resposta.data.periodo;
-      // Em seguida, atualize o compositor
       axios.put('http://localhost:3000/compositores/' + req.params.id, req.body)
         .then(resposta => {
-          // Se o período foi editado, atualize o período também
           if (originalPeriodo !== req.body.periodo) {
             axios.put('http://localhost:3000/periodos/' + originalPeriodo, {periodo: req.body.periodo})
               .then(resposta => {
@@ -154,9 +167,17 @@ router.get('/periodos/registo', function(req, res) {
 
 router.get('/periodos/:id', function(req, res) {
   var d = new Date().toISOString().substring(0, 16)
+  console.log(req.params.id);
   axios.get('http://localhost:3000/periodos/' + req.params.id)
   .then(resposta => {
-    res.render('periodo', { periodo: resposta.data, data: d, title: resposta.data.nome});
+    axios.get('http://localhost:3000/compositores')
+    .then(resposta2 => {
+      var compositores = resposta2.data.filter(comp => comp.periodo === resposta.data.nome);
+      res.render('periodo', { periodo: resposta.data, compositores: compositores, data: d, title: resposta.data.nome});
+    })
+    .catch(erro => {
+      res.render('error', { error: erro, message : 'Erro a aceder os compositores' });
+    })
   })
   .catch(erro => {
     res.render('error', { error: erro, message : 'Erro a aceder o periodo' });

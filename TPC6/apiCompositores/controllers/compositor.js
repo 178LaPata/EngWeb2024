@@ -18,6 +18,10 @@ module.exports.insert = compositor => {
     return Compositor.create(compositor)
 }
 
-module.exports.updateCompositor = id, compositor => {
-    return Compositor.updateOne({id: id}, compositor)
+module.exports.updateCompositor = (id, compositor) => {
+    return Compositor.updateOne({id: id}, compositor);
+}
+
+module.exports.removeCompositor = id => {
+    return Compositor.deleteOne({id: id});
 }
