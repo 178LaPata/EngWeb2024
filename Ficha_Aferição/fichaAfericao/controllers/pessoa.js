@@ -9,21 +9,24 @@ module.exports.list = () => {
 
 module.exports.findById = id => {
     return pessoa
-        .findOne({id: id})
+        .findOne({_id: id})
         .exec()
 }
 
 module.exports.insert = pessoa => {
-    if ((pessoa.findOne({id: pessoa.id}).exec()) == null) {
-        return pessoa.save()
-    }
-    return null
+    return pessoa.create(pessoa)
 }
 
-module.exports.updatePessoas = (id, pessoa) => {
-    return pessoa.findOneAndUpdate({id: id}, pessoa, {new: true}).exec()
+module.exports.updatePessoa = (id, pessoa) => {
+    return pessoa.updateOne({_id: id}, pessoa);
 }
 
-module.exports.removePessoas = id => {
-    return pessoa.deleteOne({id: id}).exec()
-}  
+module.exports.removePessoa = id => {
+    return pessoa.deleteOne({_id: id});
+}
+
+module.exports.desportos = () => {
+    return pessoa
+        .distinct("desporto")
+        .exec()
+}

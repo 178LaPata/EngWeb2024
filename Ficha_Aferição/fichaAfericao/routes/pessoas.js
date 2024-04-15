@@ -8,30 +8,22 @@ router.get('/pessoas', function(req, res) {
     .catch(erro => res.status(521).jsonp(erro))
 });
 
-router.get('/pessoas/:id', function(req, res) {
-  Pessoa.findById(req.params.id)
-    .then(dados => res.status(200).jsonp(dados))
-    .catch(erro => res.status(522).jsonp(erro))
-});
-
-router.post('/pessoa/registo', function(req, res) {
+router.post('/pessoas', function(req, res) {
   Pessoa.insert(req.body)
     .then(dados => res.status(201).jsonp(dados))
     .catch(erro => res.status(523).jsonp(erro))
 });
 
-router.get('/pessoas/delete/:id', function(req, res) {
-  Pessoa.removePessoas(req.params.id)
-    .then(dados => res.status(200).jsonp(dados))
-    .catch(erro => res.status(524).jsonp(erro))
-});
-
-router.post('/pessoas/editar/:id', function(req, res) {
-  Pessoa.updatePessoas(req.params.id, req.body)
+router.put('/pessoas/:id', function(req, res) {
+  Pessoa.updatePessoa(req.params.id, req.body)
     .then(dados => res.status(200).jsonp(dados))
     .catch(erro => res.status(525).jsonp(erro))
 });
 
-
+router.delete('/pessoas/:id', function(req, res) {
+  Pessoa.removePessoa(req.params.id)
+    .then(dados => res.status(200).jsonp(dados))
+    .catch(erro => res.status(524).jsonp(erro))
+});
 
 module.exports = router;
